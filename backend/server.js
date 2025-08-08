@@ -1,0 +1,80 @@
+// BLOCK 1: Importing Dependencies
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const dotenv = require("dotenv");
+
+// BLOCK 2: Configuring the Express App
+dotenv.config();
+
+const app = express();
+
+// BLOCK 3: Setting Up Middleware
+app.use(cors());
+app.use(express.json());
+
+// BLOCK 4: Connecting to MongoDB
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("MongoDB Connected");
+  } catch (err) {
+    console.error("MongoDB Connection Failed:", err);
+    process.exit(1); // Exit process with failure
+  }
+};
+
+// Call the database connection function
+connectDB();
+
+// BLOCK 5: Defining Routes
+const tasksRoutes = require("./routes/tasks");
+app.use("/api/tasks", tasksRoutes);
+
+// BLOCK 6: Starting the Server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+
+
+/*BLOCK 1: Importing dependencies
+
+express**:** Creates the server.
+
+mongoose**:** Connects to MongoDB.
+
+cors**:** Enables cross-origin requests.
+
+dotenv**:** Loads environment variables.
+
+BLOCK 2: Configuring the Express app
+
+Loads environment variables using dotenv.config().
+
+Initializes express() to create an app instance.
+
+BLOCK 3: Setting up middleware
+
+cors(): Allows API access from different origins.
+
+express.json(): Parses incoming JSON requests.
+
+BLOCK 4: Connecting to MongoDB
+
+Defines connectDB() to connect to MongoDB using MONGO_URI.
+
+Logs success or failure and exits on error.
+
+BLOCK 5: Defining routes
+
+Imports tasksRoutes from ./routes/tasks.
+
+Uses /api/tasks as the base route for task operations.
+
+BLOCK 6: Starting the server
+
+Sets PORT from .env or defaults to 5000.
+
+Starts the server and logs the running port.*/

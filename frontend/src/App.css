@@ -1,0 +1,230 @@
+/* ========== Design Tokens ========== */
+:root {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --primary: #2563eb;
+  --primary-600: #1d4ed8;
+  --primary-700: #1e40af;
+  --ring: 78 156 246;
+  --radius: 14px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.06);
+  --shadow-md: 0 6px 20px rgba(16,24,40,.08);
+  --transition: 180ms ease;
+  --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b1020;
+    --surface: #11162a;
+    --text: #e5e7eb;
+    --muted: #9aa4b2;
+    --primary: #60a5fa;
+    --primary-600: #3b82f6;
+    --primary-700: #2563eb;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+    --shadow-md: 0 10px 30px rgba(0,0,0,.45);
+  }
+}
+
+/* ========== Page Layout ========== */
+html, body {
+  display: flex;
+  justify-content: center;   /* center horizontally */
+  margin: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  width: 100%;
+  min-height: 100svh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========== App Shell (optional) ========== */
+.App {
+  width: 100%;
+  max-width: 720px;          /* overall width of the app */
+  padding: 0 16px;           /* side breathing room on small screens */
+  box-sizing: border-box;
+}
+
+/* Title / header */
+h1 {
+  margin: 0 0 14px;
+  font-size: 1.25rem;
+  line-height: 1.2;
+  letter-spacing: .2px;
+}
+.subtitle {
+  margin: -6px 0 16px;
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+/* ========== Stacked Todo Layout (Input on top, List below) ========== */
+.todo-container {
+  display: flex;
+  flex-direction: column;    /* stack vertically */
+  align-items: center;       /* center both blocks horizontally */
+  gap: 20px;
+  width: 100%;
+}
+
+.todo-input,
+.todo-list {
+  width: 100%;
+  max-width: 720px;          /* keep both blocks same width */
+  background: var(--surface);
+  padding: 22px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(17,24,39,.06);
+}
+
+/* Make the input block feel lighter/narrower if you want — comment out if not desired */
+.todo-input {
+  max-width: 560px;
+}
+
+/* ========== Inputs ========== */
+input[type="text"],
+input[type="search"],
+input[type="email"] {
+  width: 100%;
+  padding: 10px 12px;
+  margin: 0 0 10px;
+  border: 1px solid rgba(107,114,128,.35);
+  border-radius: 10px;
+  font-size: 15px;
+  background: transparent;
+  color: var(--text);
+  box-sizing: border-box;
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+}
+input::placeholder { color: var(--muted); }
+input:focus-visible {
+  outline: none;
+  border-color: rgb(var(--ring));
+  box-shadow: 0 0 0 4px rgba(var(--ring), .15);
+  background: rgba(99,102,241,.02);
+}
+
+/* ========== Buttons ========== */
+button {
+  width: 100%;
+  padding: 11px 12px;
+  margin-top: 6px;
+  border: 0;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  background: var(--primary);
+  color: white;
+  transition: transform 120ms ease, background var(--transition), box-shadow var(--transition), opacity var(--transition);
+  box-shadow: var(--shadow-sm);
+  user-select: none;
+}
+button:hover { background: var(--primary-600); }
+button:active { transform: translateY(1px) scale(0.995); }
+button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(var(--ring), .25);
+}
+
+button.secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid rgba(107,114,128,.35);
+}
+button.secondary:hover { background: rgba(107,114,128,.08); }
+
+button.danger {
+  background: #ef4444;
+}
+button.danger:hover { background: #dc2626; }
+
+/* ========== List ========== */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 14px 0 0;
+}
+
+li {
+  display: grid;
+  grid-template-columns: auto 1fr auto; /* checkbox | text | actions */
+  align-items: center;
+  gap: 10px;
+  background: color-mix(in oklab, var(--surface), #000 0%);
+  padding: 10px 12px;
+  margin: 8px 0;
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(17,24,39,.06);
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+li:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(16,24,40,.10);
+}
+
+span {
+  min-width: 0;
+  font-size: 15px;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+span.completed {
+  text-decoration: line-through;
+  color: var(--muted);
+  opacity: .85;
+}
+
+/* Inline edit field inside a list item */
+li input[type="text"] {
+  width: 100%;
+  margin: 0;
+}
+
+/* Actions cluster */
+.item-actions {
+  display: inline-flex;
+  gap: 6px;
+}
+.item-actions button {
+  width: auto;
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+/* Checkbox */
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--primary);
+  margin: 0;
+}
+
+/* Editing mode row */
+.editing-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+
+
+/* ========== Small Screens ========== */
+@media (max-width: 560px) {
+  .App { padding: 0 12px; }
+  li { grid-template-columns: auto 1fr; }
+  .item-actions { grid-column: 1 / -1; justify-content: flex-end; }
+}
